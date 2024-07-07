@@ -3,9 +3,10 @@ using Soenneker.Google.Credentials.Abstract;
 using Soenneker.Google.IndexingService.Abstract;
 using Soenneker.Utils.SingletonDictionary;
 using System;
-using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
+using Soenneker.Extensions.ValueTask;
 
 namespace Soenneker.Google.IndexingService;
 
@@ -16,11 +17,9 @@ public class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
 
     public GoogleIndexingServiceUtil(IGoogleCredentialsUtil googleCredentialsUtil)
     {
-        _indexingServices = new SingletonDictionary<global::Google.Apis.Indexing.v3.IndexingService>(async (args) =>
+        _indexingServices = new SingletonDictionary<global::Google.Apis.Indexing.v3.IndexingService>(async (filename, token, args) =>
         {
-            var fileName = (string)args!.First();
-
-            ICredential credential = await googleCredentialsUtil.Get(fileName);
+            ICredential credential = await googleCredentialsUtil.Get(filename, token).NoSync();
 
             return new global::Google.Apis.Indexing.v3.IndexingService(new BaseClientService.Initializer
             {
@@ -29,19 +28,19 @@ public class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
         });
     }
 
-    public ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName)
+    public ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName, CancellationToken cancellationToken = default)
     {
-        return _indexingServices.Get(fileName, fileName);
+        return _indexingServices.Get(fileName, cancellationToken, fileName);
     }
 
-    public ValueTask Remove(string fileName)
+    public ValueTask Remove(string fileName, CancellationToken cancellationToken = default)
     {
-        return _indexingServices.Remove(fileName);
+        return _indexingServices.Remove(fileName, cancellationToken);
     }
 
-    public void RemoveSync(string fileName)
+    public void RemoveSync(string fileName, CancellationToken cancellationToken = default)
     {
-        _indexingServices.RemoveSync(fileName);
+        _indexingServices.RemoveSync(fileName, cancellationToken);
     }
 
     public ValueTask DisposeAsync()
