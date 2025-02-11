@@ -1,3 +1,4 @@
+﻿```
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Soenneker.Google.Credentials.Registrars;
@@ -13,18 +14,21 @@ public static class GoogleIndexingServiceUtilRegistrar
     /// <summary>
     /// Adds <see cref="IGoogleIndexingServiceUtil"/> as a singleton service. <para/>
     /// </summary>
-    public static void AddGoogleIndexingServiceUtilAsSingleton(this IServiceCollection services)
+    public static IServiceCollection AddGoogleIndexingServiceUtilAsSingleton(this IServiceCollection services)
     {
         services.AddGoogleCredentialsUtilAsSingleton();
         services.TryAddSingleton<IGoogleIndexingServiceUtil, GoogleIndexingServiceUtil>();
+        return services;
     }
 
     /// <summary>
     /// Adds <see cref="IGoogleIndexingServiceUtil"/> as a scoped service. <para/>
     /// </summary>
-    public static void AddGoogleIndexingServiceUtilAsScoped(this IServiceCollection services)
+    public static IServiceCollection AddGoogleIndexingServiceUtilAsScoped(this IServiceCollection services)
     {
         services.AddGoogleCredentialsUtilAsScoped();
         services.TryAddScoped<IGoogleIndexingServiceUtil, GoogleIndexingServiceUtil>();
+        return services;
     }
 }
+```
