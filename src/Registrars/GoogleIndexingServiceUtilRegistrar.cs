@@ -1,5 +1,4 @@
-﻿```
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Soenneker.Google.Credentials.Registrars;
 using Soenneker.Google.IndexingService.Abstract;
@@ -31,4 +30,3 @@ public static class GoogleIndexingServiceUtilRegistrar
         return services;
     }
 }
-```
