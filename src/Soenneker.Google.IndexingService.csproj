@@ -41,6 +41,6 @@
 
     <ItemGroup>
         <PackageReference Include="Google.Apis.Indexing.v3" Version="1.68.0.3191" />
-        <PackageReference Include="Soenneker.Google.Credentials" Version="3.0.1975" />
+        <PackageReference Include="Soenneker.Google.Credentials" Version="3.0.1979" />
     </ItemGroup>
 </Project>
