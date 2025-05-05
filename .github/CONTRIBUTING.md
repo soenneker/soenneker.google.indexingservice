@@ -1,4 +1,4 @@
-# Contributing to Soenneker.Google.IndexingService
+﻿# Contributing to Soenneker.Google.IndexingService
 
 We're excited that you're interested in contributing!
 
