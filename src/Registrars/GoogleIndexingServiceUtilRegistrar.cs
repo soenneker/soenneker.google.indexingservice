@@ -15,8 +15,7 @@ public static class GoogleIndexingServiceUtilRegistrar
     /// </summary>
     public static IServiceCollection AddGoogleIndexingServiceUtilAsSingleton(this IServiceCollection services)
     {
-        services.AddGoogleCredentialsUtilAsSingleton();
-        services.TryAddSingleton<IGoogleIndexingServiceUtil, GoogleIndexingServiceUtil>();
+        services.AddGoogleCredentialsUtilAsSingleton().TryAddSingleton<IGoogleIndexingServiceUtil, GoogleIndexingServiceUtil>();
         return services;
     }
 
@@ -25,8 +24,7 @@ public static class GoogleIndexingServiceUtilRegistrar
     /// </summary>
     public static IServiceCollection AddGoogleIndexingServiceUtilAsScoped(this IServiceCollection services)
     {
-        services.AddGoogleCredentialsUtilAsScoped();
-        services.TryAddScoped<IGoogleIndexingServiceUtil, GoogleIndexingServiceUtil>();
+        services.AddGoogleCredentialsUtilAsScoped().TryAddScoped<IGoogleIndexingServiceUtil, GoogleIndexingServiceUtil>();
         return services;
     }
 }

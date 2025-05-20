@@ -11,7 +11,7 @@ using Soenneker.Extensions.ValueTask;
 namespace Soenneker.Google.IndexingService;
 
 /// <inheritdoc cref="IGoogleIndexingServiceUtil"/>
-public class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
+public sealed class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
 {
     private readonly SingletonDictionary<global::Google.Apis.Indexing.v3.IndexingService> _indexingServices;
 
@@ -19,7 +19,8 @@ public class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
     {
         _indexingServices = new SingletonDictionary<global::Google.Apis.Indexing.v3.IndexingService>(async (filename, token, args) =>
         {
-            ICredential credential = await googleCredentialsUtil.Get(filename, token).NoSync();
+            string[] scopes = ["https://www.googleapis.com/auth/indexing"];
+            ICredential credential = await googleCredentialsUtil.Get(filename, scopes, token).NoSync();
 
             return new global::Google.Apis.Indexing.v3.IndexingService(new BaseClientService.Initializer
             {
