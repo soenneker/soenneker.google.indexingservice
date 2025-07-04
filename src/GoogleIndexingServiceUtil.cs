@@ -2,7 +2,6 @@ using Google.Apis.Services;
 using Soenneker.Google.Credentials.Abstract;
 using Soenneker.Google.IndexingService.Abstract;
 using Soenneker.Utils.SingletonDictionary;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Google.Apis.Auth.OAuth2;
@@ -44,17 +43,13 @@ public sealed class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
         _indexingServices.RemoveSync(fileName, cancellationToken);
     }
 
-    public ValueTask DisposeAsync()
-    {
-        GC.SuppressFinalize(this);
-
-        return _indexingServices.DisposeAsync();
-    }
-
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
-
         _indexingServices.Dispose();
+    }
+
+    public ValueTask DisposeAsync()
+    {
+        return _indexingServices.DisposeAsync();
     }
 }
