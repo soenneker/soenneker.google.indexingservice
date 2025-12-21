@@ -16,7 +16,7 @@ public sealed class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
 
     public GoogleIndexingServiceUtil(IGoogleCredentialsUtil googleCredentialsUtil)
     {
-        _indexingServices = new SingletonDictionary<global::Google.Apis.Indexing.v3.IndexingService>(async (filename, token, args) =>
+        _indexingServices = new SingletonDictionary<global::Google.Apis.Indexing.v3.IndexingService>(async (filename, token) =>
         {
             string[] scopes = ["https://www.googleapis.com/auth/indexing"];
             ICredential credential = await googleCredentialsUtil.Get(filename, scopes, token).NoSync();
@@ -30,7 +30,7 @@ public sealed class GoogleIndexingServiceUtil: IGoogleIndexingServiceUtil
 
     public ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName, CancellationToken cancellationToken = default)
     {
-        return _indexingServices.Get(fileName, cancellationToken, fileName);
+        return _indexingServices.Get(fileName, cancellationToken);
     }
 
     public ValueTask Remove(string fileName, CancellationToken cancellationToken = default)
