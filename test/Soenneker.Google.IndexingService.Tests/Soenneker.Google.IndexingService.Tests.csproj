@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\..\src\Soenneker.Google.IndexingService.csproj" />
+        <ProjectReference Include="..\..\src\Soenneker.Google.IndexingService\Soenneker.Google.IndexingService.csproj" />
     </ItemGroup>
 
     <ItemGroup>
