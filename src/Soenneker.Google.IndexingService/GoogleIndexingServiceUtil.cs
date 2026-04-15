@@ -39,7 +39,7 @@ public sealed class GoogleIndexingServiceUtil : IGoogleIndexingServiceUtil
     public ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName, CancellationToken cancellationToken = default) =>
         _indexingServices.Get(fileName, cancellationToken);
 
-    public ValueTask Remove(string fileName, CancellationToken cancellationToken = default) => _indexingServices.Remove(fileName, cancellationToken);
+    public ValueTask<bool> Remove(string fileName, CancellationToken cancellationToken = default) => _indexingServices.Remove(fileName, cancellationToken);
 
     public void RemoveSync(string fileName, CancellationToken cancellationToken = default) => _indexingServices.RemoveSync(fileName, cancellationToken);
 

@@ -17,7 +17,7 @@ public interface IGoogleIndexingServiceUtil : IDisposable, IAsyncDisposable
     /// <param name="fileName"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    ValueTask Remove(string fileName, CancellationToken cancellationToken = default);
+    ValueTask<bool> Remove(string fileName, CancellationToken cancellationToken = default);
 
     /// <inheritdoc cref="Remove(string, CancellationToken)"/>"/>
     void RemoveSync(string fileName, CancellationToken cancellationToken = default);
