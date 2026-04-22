@@ -1,20 +1,19 @@
 using Soenneker.Google.IndexingService.Abstract;
-using Soenneker.Tests.FixturedUnit;
-using Xunit;
+using Soenneker.Tests.HostedUnit;
 
 namespace Soenneker.Google.IndexingService.Tests;
 
-[Collection("Collection")]
-public class GoogleIndexingServiceUtilTests : FixturedUnitTest
+[ClassDataSource<Host>(Shared = SharedType.PerTestSession)]
+public class GoogleIndexingServiceUtilTests : HostedUnitTest
 {
     private readonly IGoogleIndexingServiceUtil _util;
 
-    public GoogleIndexingServiceUtilTests(Fixture fixture, ITestOutputHelper output) : base(fixture, output)
+    public GoogleIndexingServiceUtilTests(Host host) : base(host)
     {
         _util = Resolve<IGoogleIndexingServiceUtil>(true);
     }
 
-    [Fact]
+    [Test]
     public void Default()
     {
 
