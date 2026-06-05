@@ -9,6 +9,12 @@ namespace Soenneker.Google.IndexingService.Abstract;
 /// </summary>
 public interface IGoogleIndexingServiceUtil : IDisposable, IAsyncDisposable
 {
+    /// <summary>
+    /// Gets the value.
+    /// </summary>
+    /// <param name="fileName">The file name.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <returns>A task containing the result of the operation.</returns>
     ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -19,6 +25,10 @@ public interface IGoogleIndexingServiceUtil : IDisposable, IAsyncDisposable
     /// <returns></returns>
     ValueTask<bool> Remove(string fileName, CancellationToken cancellationToken = default);
 
-    /// <inheritdoc cref="Remove(string, CancellationToken)"/>"/>
+    /// <summary>
+    /// Removes sync.
+    /// </summary>
+    /// <param name="fileName">The file name.</param>
+    /// <param name="cancellationToken">The cancellation token.</param>
     void RemoveSync(string fileName, CancellationToken cancellationToken = default);
 }

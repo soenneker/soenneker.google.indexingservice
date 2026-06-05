@@ -43,7 +43,14 @@ public sealed class GoogleIndexingServiceUtil : IGoogleIndexingServiceUtil
 
     public void RemoveSync(string fileName, CancellationToken cancellationToken = default) => _indexingServices.RemoveSync(fileName, cancellationToken);
 
+    /// <summary>
+    /// Releases resources used by the current instance.
+    /// </summary>
     public void Dispose() => _indexingServices.Dispose();
 
+    /// <summary>
+    /// Asynchronously releases resources used by the current instance.
+    /// </summary>
+    /// <returns>A task that represents the asynchronous operation.</returns>
     public ValueTask DisposeAsync() => _indexingServices.DisposeAsync();
 }
