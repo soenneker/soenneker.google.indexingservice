@@ -18,11 +18,11 @@ public interface IGoogleIndexingServiceUtil : IDisposable, IAsyncDisposable
     ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Should be used if the component using is disposed (unless the entire app is being disposed).
+    /// Removes and disposes the cached indexing client associated with a credential file.
     /// </summary>
-    /// <param name="fileName"></param>
-    /// <param name="cancellationToken"></param>
-    /// <returns></returns>
+    /// <param name="fileName">Credential filename used as the cache key.</param>
+    /// <param name="cancellationToken">Token used to cancel asynchronous disposal.</param>
+    /// <returns>A task whose result is <see langword="true"/> when a cached client was removed; otherwise, <see langword="false"/>.</returns>
     ValueTask<bool> Remove(string fileName, CancellationToken cancellationToken = default);
 
     /// <summary>
