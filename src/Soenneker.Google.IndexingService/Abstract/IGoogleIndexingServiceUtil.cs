@@ -10,11 +10,11 @@ namespace Soenneker.Google.IndexingService.Abstract;
 public interface IGoogleIndexingServiceUtil : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Gets the value.
+    /// Returns the configured global::Google.Apis.Indexing.v3.Indexing Service used by the google indexing service.
     /// </summary>
-    /// <param name="fileName">The file name.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
-    /// <returns>A task containing the result of the operation.</returns>
+    /// <param name="fileName">Name of the target file.</param>
+    /// <param name="cancellationToken">Token used to cancel the operation.</param>
+    /// <returns>A task whose result is the requested global::Google.Apis.Indexing.v3.Indexing Service.</returns>
     ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName, CancellationToken cancellationToken = default);
 
     /// <summary>
