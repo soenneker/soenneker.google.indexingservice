@@ -5,7 +5,7 @@
 
 # Soenneker.Google.IndexingService
 
-An async thread-safe singleton for the Google indexing service client.
+A lazy, thread-safe provider for Google Indexing API clients keyed by service-account credential file.
 
 ## Install
 
@@ -13,33 +13,57 @@ An async thread-safe singleton for the Google indexing service client.
 dotnet add package Soenneker.Google.IndexingService
 ```
 
-## Quick start
+## Credential file
+
+This package uses `Soenneker.Google.Credentials`. Place a service-account JSON file beneath `LocalResources` in the application output and pass its resource-relative filename to `Get()`.
+
+```xml
+<Content Include="LocalResources\google-indexing.json"
+         CopyToOutputDirectory="PreserveNewest" />
+```
+
+## Register
 
 ```csharp
 using Soenneker.Google.IndexingService.Registrars;
 using Microsoft.Extensions.DependencyInjection;
 
-var services = new ServiceCollection();
-var result = services.AddGoogleIndexingServiceUtilAsSingleton();
+services.AddGoogleIndexingServiceUtilAsSingleton();
 ```
 
-Adds `IGoogleIndexingServiceUtil` as a singleton service.
+Singleton registration is recommended for this client provider. Scoped application utilities can use it and be disposed without destroying the cached Google client. `AddGoogleIndexingServiceUtilAsScoped()` is available only when each scope deliberately needs separate credential and client caches.
 
-## What you get
+## Publish a notification
 
-- `IGoogleIndexingServiceUtil` — An async thread-safe singleton for the Google indexing service client.
-- `GoogleIndexingServiceUtilRegistrar` — An async thread-safe singleton for the Google indexing service client.
+```csharp
+using Google.Apis.Indexing.v3.Data;
+
+Google.Apis.Indexing.v3.IndexingService service =
+    await indexingServices.Get("google-indexing.json", cancellationToken);
+
+var notification = new UrlNotification
+{
+    Url = "https://example.com/jobs/software-engineer",
+    Type = "URL_UPDATED"
+};
+
+await service.UrlNotifications
+    .Publish(notification)
+    .ExecuteAsync(cancellationToken);
+```
+
+The service account must be authorized for the target site. This package creates the authenticated client; it does not decide whether a URL or notification type is eligible for Google's Indexing API.
 
 ## API at a glance
 
 | API | What it does | Result / important behavior |
 | --- | --- | --- |
-| `IGoogleIndexingServiceUtil.Remove(fileName, cancellationToken)` | Removes and disposes the cached indexing client associated with a credential file. | A task whose result is `true` when a cached client was removed; otherwise, `false`. |
-| `GoogleIndexingServiceUtilRegistrar.AddGoogleIndexingServiceUtilAsSingleton(services)` | Adds `IGoogleIndexingServiceUtil` as a singleton service. | The same service collection, so additional registrations can be chained. |
-| `GoogleIndexingServiceUtilRegistrar.AddGoogleIndexingServiceUtilAsScoped(services)` | Adds `IGoogleIndexingServiceUtil` as a scoped service. | The same service collection, so additional registrations can be chained. |
+| `Get(fileName)` | Gets or creates the authenticated client for a credential file. | Reuses the same client for that filename within the provider lifetime. |
+| `Remove(fileName)` | Asynchronously removes and disposes a cached client. | Returns whether an entry existed. |
+| `RemoveSync(fileName)` | Synchronously removes and disposes a cached client. | Use only when asynchronous removal is unavailable. |
 
 ## Practical notes
 
-- Cancellation stops pending work; it does not undo work that has already completed.
-- Calls that return a cached or singleton value reuse the same instance until the owning service is disposed.
-- Dispose instances you own when their scope ends so held resources can be released.
+- Removing a client does not remove the underlying cached credential from `IGoogleCredentialsUtil`.
+- Do not use a client concurrently with removing that same filename; removal disposes the cached service.
+- Let the DI container dispose registered providers. Dispose manually constructed providers yourself.

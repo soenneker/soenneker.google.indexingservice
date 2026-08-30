@@ -6,7 +6,7 @@ using Soenneker.Google.IndexingService.Abstract;
 namespace Soenneker.Google.IndexingService.Registrars;
 
 /// <summary>
-/// An async thread-safe singleton for the Google indexing service client
+/// Registers the Google Indexing API client provider and its credential cache.
 /// </summary>
 public static class GoogleIndexingServiceUtilRegistrar
 {

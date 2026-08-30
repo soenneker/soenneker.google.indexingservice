@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 namespace Soenneker.Google.IndexingService.Abstract;
 
 /// <summary>
-/// An async thread-safe singleton for the Google indexing service client
+/// Provides lazily initialized Google Indexing API clients keyed by service-account credential filename.
 /// </summary>
 public interface IGoogleIndexingServiceUtil : IDisposable, IAsyncDisposable
 {
     /// <summary>
-    /// Returns the configured global::Google.Apis.Indexing.v3.Indexing Service used by the google indexing service.
+    /// Gets or creates the authenticated Indexing API client for a credential file.
     /// </summary>
-    /// <param name="fileName">Name of the target file.</param>
+    /// <param name="fileName">The credential filename relative to <c>LocalResources</c>.</param>
     /// <param name="cancellationToken">Token used to cancel the operation.</param>
-    /// <returns>A task whose result is the requested global::Google.Apis.Indexing.v3.Indexing Service.</returns>
+    /// <returns>The cached client associated with <paramref name="fileName"/>.</returns>
     ValueTask<global::Google.Apis.Indexing.v3.IndexingService> Get(string fileName, CancellationToken cancellationToken = default);
 
     /// <summary>
@@ -26,9 +26,9 @@ public interface IGoogleIndexingServiceUtil : IDisposable, IAsyncDisposable
     ValueTask<bool> Remove(string fileName, CancellationToken cancellationToken = default);
 
     /// <summary>
-    /// Removes sync.
+    /// Synchronously removes and disposes the cached indexing client associated with a credential file.
     /// </summary>
-    /// <param name="fileName">The file name.</param>
-    /// <param name="cancellationToken">The cancellation token.</param>
+    /// <param name="fileName">Credential filename used as the cache key.</param>
+    /// <param name="cancellationToken">Token observed while removing the client.</param>
     void RemoveSync(string fileName, CancellationToken cancellationToken = default);
 }
