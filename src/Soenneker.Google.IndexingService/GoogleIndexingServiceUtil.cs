@@ -9,6 +9,7 @@ using Soenneker.Dictionaries.SingletonKeys;
 
 namespace Soenneker.Google.IndexingService;
 
+/// <inheritdoc cref="IGoogleIndexingServiceUtil" />
 public sealed class GoogleIndexingServiceUtil : IGoogleIndexingServiceUtil
 {
     private static readonly string[] _scopes = ["https://www.googleapis.com/auth/indexing"];
